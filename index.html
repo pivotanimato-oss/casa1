@@ -10002,8 +10002,17 @@ buildItems();
           break;
       }
 
-      // Chamar API com o mesmo padrão das outras operações
-      const result = await apiCall('testNotification', payload);
+      // Chamar API diretamente via fetch
+      const result = await fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+
+      if (!result.ok) {
+        throw new Error(`HTTP ${result.status}`);
+      }
+
+      const data = await result.json();
       
       status.classList.add('success');
       status.textContent = '✓ Email de teste enviado com sucesso!';
