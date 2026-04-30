@@ -9950,10 +9950,16 @@ buildItems();
     status.textContent = 'A enviar...';
 
     try {
-      // Verificar se tem acesso à API
-      const apiUrl = (typeof State !== 'undefined' && State.apiUrl) || 
-                     localStorage.getItem('fin_api_url') ||
-                     localStorage.getItem('LS_API_URL');
+      // Verificar se tem acesso à API — procurar diretamente no localStorage
+      const LS_API_KEY = 'fin_apps_script_url';
+      const FALLBACK_URL = 'https://script.google.com/macros/s/AKfycbzmHvvs84ar_a0sai7aFy7qU9Xr8hPpnbAYGazNru0WfWGaAO9G8xZCKyniGQy87MbFYA/exec';
+      
+      let apiUrl = localStorage.getItem(LS_API_KEY) || FALLBACK_URL;
+      
+      // Se ainda não tem no localStorage, guardar o fallback
+      if (!localStorage.getItem(LS_API_KEY)) {
+        localStorage.setItem(LS_API_KEY, FALLBACK_URL);
+      }
       
       if (!apiUrl) {
         status.classList.add('error');
