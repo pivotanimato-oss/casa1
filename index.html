@@ -10003,16 +10003,25 @@ buildItems();
       }
 
       // Chamar API diretamente via fetch
+      console.log('📧 Enviando teste de email para:', apiUrl);
+      console.log('📦 Payload:', payload);
+      
       const result = await fetch(apiUrl, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(payload)
       });
 
+      console.log('📬 Resposta HTTP:', result.status, result.statusText);
+
       if (!result.ok) {
-        throw new Error(`HTTP ${result.status}`);
+        throw new Error(`HTTP ${result.status}: ${result.statusText}`);
       }
 
       const data = await result.json();
+      console.log('✓ Resposta da API:', JSON.stringify(data, null, 2));
       
       status.classList.add('success');
       status.textContent = '✓ Email de teste enviado com sucesso!';
